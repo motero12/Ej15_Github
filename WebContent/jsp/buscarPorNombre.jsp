@@ -5,13 +5,15 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Buscar por nombre</title>
+<link rel="stylesheet" type="text/css" href="../css/estilos_formulario.css">
 </head>
 <body>
-    <form method="get" action="#" name="buscarPorNombre"> <!-- con # se queda en el mismo -->
+    <form method="get" action="${pageContext.request.contextPath}/Ej15_Github/Tienda/buscarPorNombre" name="buscarPorNombre"> <!-- con # se queda en el mismo -->
     <label>Nombre:</label>
     <input type="text" name="nombre" id="nombre"/>
     <input type="submit" name="enviar" value="Enviar"/>
     <input type="reset" name="reiniciar" value="Reiniciar"/>
+    
     </form>
 </body>
 </html>

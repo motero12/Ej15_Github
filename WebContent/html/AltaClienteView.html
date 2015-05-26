@@ -3,13 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <title>Formulario para alta de colegio</title>
-<link rel="stylesheet" type="text/css" href="css/estilos_formulario.css">
+<link rel="stylesheet" type="text/css" href="../css/estilos_formulario.css">
 </head>
 <body>
 <h1>Alta de Tienda</h1>
     <section id="contenedor">
         <section id="formulario">
-            <form name="colegio" method="post" action="Tienda/altaCliente" enctype="text/html">
+            <form name="colegio" method="post" action="/Ej15_Github/Tienda/altaCliente" enctype="text/html">
                 <h2>Datos de la tienda</h2>
                 
                 <div class="texto">
@@ -30,13 +30,6 @@
                 <div class="elemento">
                     <input type="number" id="dni" name="dni" size=9 required/>
                 </div>
-                <div class="texto">
-                    <label for="numalumnos" class="mano">Numero de alumnos</label>
-                </div>
-                <div class="elemento">
-                    <input type="number" id="numaalumnos" name="numalumnos" required/>
-                </div>
-                
                 <br/><br/>
                 
                 <input type="submit" id="Enviar" class="mano" value="enviar">
