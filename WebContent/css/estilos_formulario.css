@@ -89,3 +89,15 @@ textarea{
 {
 	cursor: pointer;
 }
+table{
+	border:1px solid blue;
+	padding:3px;
+}
+th{
+	color:white;
+}
+td, th{
+	border: 1px solid blue;
+	padding: 3px;
+	width: 10%;
+}
