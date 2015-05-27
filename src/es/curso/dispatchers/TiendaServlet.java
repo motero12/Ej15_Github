@@ -1,6 +1,7 @@
 package es.curso.dispatchers;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletConfig;
@@ -11,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import es.curso.controllers.ejb.DarAltaClienteControllersEjb;
+import es.curso.controllers.ejb.ListarTodosControllersEjb;
 import es.curso.model.entity.Cliente;
 
 /**
@@ -41,17 +43,25 @@ public class TiendaServlet extends HttpServlet {
 		// TODO Auto-generated method stub
 		String action=request.getPathInfo().substring(1);
 		request.setCharacterEncoding("UTF-8");
+		String titulo="Sin titulo";
 		switch(action){
 			case "listarTodos":
+				titulo="listado general de clientes";
+				ListarTodosControllersEjb todos=new ListarTodosControllersEjb();
+				ArrayList<Cliente> clientes=todos.listarTodos();
+				request.setAttribute("clientes", clientes);
 				break;
 			case "buscarPorNombre":
+				titulo="resultado de la busqueda por nombre";
 				break;
 		}
 		//redirigir hacia una vista jsp para mostrar los clientes
 		
 		RequestDispatcher rd;
 		//enviar a la vista el resultado de la consulta a la base de datos
-		rd=request.getRequestDispatcher("listarTodos.jsp");
+		rd=request.getRequestDispatcher("/jsp/listarTodos.jsp");
+		request.setAttribute("iva", new Integer(21));
+		request.setAttribute("titulo",titulo);
 		rd.forward(request, response);
 	}
 
@@ -74,7 +84,7 @@ public class TiendaServlet extends HttpServlet {
 			controlador.agregar(cliente);
 			break;
 		
-	}
+		}
 	}
 
 }
