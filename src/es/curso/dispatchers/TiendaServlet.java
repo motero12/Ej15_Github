@@ -44,25 +44,26 @@ public class TiendaServlet extends HttpServlet {
 		String action=request.getPathInfo().substring(1);
 		request.setCharacterEncoding("UTF-8");
 		String titulo="Sin titulo";
+		RequestDispatcher rd;
 		switch(action){
 			case "listarTodos":
 				titulo="listado general de clientes";
 				ListarTodosControllersEjb todos=new ListarTodosControllersEjb();
 				ArrayList<Cliente> clientes=todos.listarTodos();
 				request.setAttribute("clientes", clientes);
+				rd=request.getRequestDispatcher("/jsp/listarTodos.jsp");
+				//redirigir hacia una vista jsp para mostrar los clientes
+				request.setAttribute("titulo",titulo);
+				//enviar a la vista el resultado de la consulta a la base de datos
+				rd.forward(request, response);
 				break;
-			case "buscarPorNombre":
+			case "buscarPorNombre":	
 				titulo="resultado de la busqueda por nombre";
+				request.setAttribute("titulo",titulo);
+				rd=request.getRequestDispatcher("/jsp/listarTodos.jsp");
+				rd.forward(request, response);
 				break;
 		}
-		//redirigir hacia una vista jsp para mostrar los clientes
-		
-		RequestDispatcher rd;
-		//enviar a la vista el resultado de la consulta a la base de datos
-		rd=request.getRequestDispatcher("/jsp/listarTodos.jsp");
-		request.setAttribute("iva", new Integer(21));
-		request.setAttribute("titulo",titulo);
-		rd.forward(request, response);
 	}
 
 	/**
@@ -72,6 +73,7 @@ public class TiendaServlet extends HttpServlet {
 		// TODO Auto-generated method stub
 		String action=request.getPathInfo().substring(1);
 		request.setCharacterEncoding("UTF-8");
+		RequestDispatcher rd;
 		switch(action){
 		case "altaCliente":
 			//recuperar los datos del formulario
@@ -82,8 +84,9 @@ public class TiendaServlet extends HttpServlet {
 			DarAltaClienteControllersEjb controlador=new
 					DarAltaClienteControllersEjb();
 			controlador.agregar(cliente);
+			rd=request.getRequestDispatcher("/index.html");
+			rd.forward(request, response);
 			break;
-		
 		}
 	}
 
