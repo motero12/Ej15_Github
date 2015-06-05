@@ -12,7 +12,7 @@ import es.curso.persistence.model.dao.ClienteDao;
 
 public class ClienteDaoJdbc implements ClienteDao{
 	private Connection cx;
-	private ArrayList<Cliente> clientes=new ArrayList<Cliente>();
+	
 	@Override
 	public void create(Cliente cliente) {
 		try {
@@ -118,5 +118,50 @@ public class ClienteDaoJdbc implements ClienteDao{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	//@Override
+	public ArrayList<Cliente> searchByName(String name) {
+		// TODO Auto-generated method stub
+		ArrayList<Cliente> clientes=new ArrayList<Cliente>();
+		try {
+			// 1. establecer la conexion
+			abrirConexion();
+			// 2. preparar las sentencias sql parametrizadas
+			PreparedStatement ps= cx.prepareStatement("select * from cliente where nombres like ?");
+			// 2.1 especificar lo que va en ?
+			ps.setString(1, "%"+name+"%");
+			// 3. ejecutar la query
+			ResultSet resultado=ps.executeQuery();
+			while(resultado.next()){
+				Cliente c=new Cliente();
+				c.setId(resultado.getInt("id"));
+				c.setNombres(resultado.getString("nombres"));
+				c.setApellidos(resultado.getString("apellidos"));
+				c.setDni(resultado.getString("dni"));
+				clientes.add(c);
+			}
+			
+			// 3.1 pasar los datos del Resultset hacia el ArrayList
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		  finally{
+			  cerrarConexion();
+		}
+		// 4. cerrar la conexion
+		return clientes;
+	}
+
+	@Override
+	public void update(Cliente cliente) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void delete(Integer id) {
+		// TODO Auto-generated method stub
+		
 	}
 }

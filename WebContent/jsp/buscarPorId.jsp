@@ -4,13 +4,13 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Buscar por nombre</title>
+<title>Buscar por id</title>
 <link rel="stylesheet" type="text/css" href="../css/estilos_formulario.css">
 </head>
 <body>
-    <form method="post" action="${pageContext.request.contextPath}/Tienda/buscarPorNombre" name="buscarPorNombre"> <!-- con # se queda en el mismo -->
-    <label>Nombre:</label>
-    <input type="text" name="nombre" id="nombre"/>
+<form method="get" action="${pageContext.request.contextPath}/Tienda/buscarPorId" name="buscarPorId"> <!-- con # se queda en el mismo -->
+    <label>Id:</label>
+    <input type="text" name="id" id="id"/>
     <input type="submit" name="enviar" value="Enviar"/>
     <input type="reset" name="reiniciar" value="Reiniciar"/>
     

@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import es.curso.controllers.ejb.BuscarPorNombreControllerEjb;
 import es.curso.controllers.ejb.DarAltaClienteControllersEjb;
 import es.curso.controllers.ejb.ListarTodosControllersEjb;
 import es.curso.model.entity.Cliente;
@@ -46,6 +47,10 @@ public class TiendaServlet extends HttpServlet {
 		String titulo="Sin titulo";
 		RequestDispatcher rd;
 		switch(action){
+			case "altaCliente":
+				rd=request.getRequestDispatcher("/html/AltaClienteView.html");
+				rd.forward(request, response);
+				break;
 			case "listarTodos":
 				titulo="listado general de clientes";
 				ListarTodosControllersEjb todos=new ListarTodosControllersEjb();
@@ -58,10 +63,14 @@ public class TiendaServlet extends HttpServlet {
 				rd.forward(request, response);
 				break;
 			case "buscarPorNombre":	
-				titulo="resultado de la busqueda por nombre";
-				request.setAttribute("titulo",titulo);
-				rd=request.getRequestDispatcher("/jsp/listarTodos.jsp");
+//				titulo="resultado de la busqueda por nombre";
+//				request.setAttribute("titulo",titulo);
+//				rd=request.getRequestDispatcher("/jsp/listarTodos.jsp");
+				rd = request.getRequestDispatcher("/jsp/buscarPorNombre.jsp");
 				rd.forward(request, response);
+				break;
+			case "buscarPorId":
+//				String cadenaId = request.getParameter("id");
 				break;
 		}
 	}
@@ -87,6 +96,18 @@ public class TiendaServlet extends HttpServlet {
 			rd=request.getRequestDispatcher("/index.html");
 			rd.forward(request, response);
 			break;
+		case "buscarPorNombre":
+			String cadenaNombre = request.getParameter("nombre");
+			BuscarPorNombreControllerEjb controladorBusqueda=new BuscarPorNombreControllerEjb();
+			controladorBusqueda.buscarPorNombre(cadenaNombre);
+			//meter en el request el ArrayList de la respuesta
+			ArrayList<Cliente> resultado=controladorBusqueda.buscarPorNombre(cadenaNombre);
+			request.setAttribute("clientes",resultado);
+			request.setAttribute("titulo","Busqueda por "+cadenaNombre);
+			rd=request.getRequestDispatcher("/jsp/listarTodos.jsp");
+			rd.forward(request, response);
+			break;
+		
 		}
 	}
 
