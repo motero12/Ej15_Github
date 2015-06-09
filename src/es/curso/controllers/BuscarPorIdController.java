@@ -1,5 +1,7 @@
 package es.curso.controllers;
 
-public interface BuscarPorIdController {
+import es.curso.model.entity.Cliente;
 
+public interface BuscarPorIdController {
+	public void eliminar(int id);
 }

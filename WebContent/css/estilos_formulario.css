@@ -61,7 +61,7 @@ input:focus, textarea:focus{
 	background: 
 }
 input[type="submit"], input[type="reset"]{
-	background: #FFFE9C;
+	background: red;
 	width:8em;
 }
 input[type="submit"];hover, input[type="reset"];hover{
@@ -100,4 +100,9 @@ td, th{
 	border: 1px solid blue;
 	padding: 3px;
 	width: 10%;
+}
+#btnSinBordes{
+	border: 0em;
+	background: transparent;
+	text-decoration: underline;
 }

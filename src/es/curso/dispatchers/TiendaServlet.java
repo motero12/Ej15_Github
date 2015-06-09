@@ -11,6 +11,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import es.curso.controllers.ejb.ActualizarPorIdControllerEjb;
+import es.curso.controllers.ejb.BuscarPorIdControllerEjb;
 import es.curso.controllers.ejb.BuscarPorNombreControllerEjb;
 import es.curso.controllers.ejb.DarAltaClienteControllersEjb;
 import es.curso.controllers.ejb.ListarTodosControllersEjb;
@@ -43,6 +45,12 @@ public class TiendaServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		String action=request.getPathInfo().substring(1);
+		//hay que ponerle el substring(1) porque lo que recupera
+		//con el getPathInfo, por ejemplo, en el caso de borrarCliente
+		//es /buscarPorId y la barra debe ser quitada, para que
+		//sea entendida por el switch, es decir, en el switch la action
+		//se llama buscarPorId. Sin embargo, desde index.html se envía
+		//como /buscarPorId
 		request.setCharacterEncoding("UTF-8");
 		String titulo="Sin titulo";
 		RequestDispatcher rd;
@@ -70,8 +78,14 @@ public class TiendaServlet extends HttpServlet {
 				rd.forward(request, response);
 				break;
 			case "buscarPorId":
-//				String cadenaId = request.getParameter("id");
+				rd = request.getRequestDispatcher("/jsp/buscarPorId.jsp");
+				rd.forward(request, response);
 				break;
+			case "actualizarPorId":
+				rd = request.getRequestDispatcher("/jsp/actualizarPorId.jsp");
+				rd.forward(request, response);
+				break;
+//				String cadenaId = request.getParameter("id");
 		}
 	}
 
@@ -107,7 +121,38 @@ public class TiendaServlet extends HttpServlet {
 			rd=request.getRequestDispatcher("/jsp/listarTodos.jsp");
 			rd.forward(request, response);
 			break;
-		
+		case "buscarPorId":
+			int id = Integer.parseInt(request.getParameter("id"));
+			BuscarPorIdControllerEjb eliminarEjb=new BuscarPorIdControllerEjb();
+			eliminarEjb.eliminar(id);
+			//al poner sendRedirect lo que hace es salirse de este servlet y
+			//volver a relanzarlo, en este caso, con listarTodos
+			response.sendRedirect("listarTodos");
+			break;
+		case "actualizarPorId":
+			int idActual = Integer.parseInt(request.getParameter("id"));
+			ActualizarPorIdControllerEjb actualizarEjb=new ActualizarPorIdControllerEjb();
+			actualizarEjb.buscar(idActual);
+			Cliente clienteUpdate=new Cliente();
+			clienteUpdate=actualizarEjb.buscar(idActual);
+			request.setAttribute("cliente",clienteUpdate);
+			String titulo;
+			titulo="Consulta de cliente";
+			request.setAttribute("titulo", titulo);
+			rd=request.getRequestDispatcher("/jsp/ConsultaCliente.jsp");
+			rd.forward(request, response);
+			break;
+		case "updatePorId":
+			int idUpdate = Integer.parseInt(request.getParameter("id"));
+			String nombreUpdate=request.getParameter("nombre");
+			String apellidosUpdate=request.getParameter("apellidos");
+			String dniUpdate=request.getParameter("dni");
+			Cliente clienteUpdates=new Cliente(idUpdate,nombreUpdate, apellidosUpdate, dniUpdate);
+			ActualizarPorIdControllerEjb updateEjb=new ActualizarPorIdControllerEjb();
+			updateEjb.actualizar(clienteUpdates);
+			rd=request.getRequestDispatcher("/index.html");
+			rd.forward(request, response);
+			break;
 		}
 	}
 

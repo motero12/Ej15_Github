@@ -11,6 +11,8 @@ public interface ClienteDao {
 	
 	public ArrayList<Cliente> searchByName(String name);
 	
+	public Cliente buscarId(Integer id);
+	
 	public void update(Cliente cliente);
 	
 	public void delete(Integer id);

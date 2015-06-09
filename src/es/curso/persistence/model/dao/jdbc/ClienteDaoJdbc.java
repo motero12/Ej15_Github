@@ -156,12 +156,76 @@ public class ClienteDaoJdbc implements ClienteDao{
 	@Override
 	public void update(Cliente cliente) {
 		// TODO Auto-generated method stub
-		
+		try {
+			abrirConexion();
+			PreparedStatement ps= cx.prepareStatement("update cliente set nombres= ?,"
+					+ " apellidos=?, dni=?"
+					+ "where id =?");
+			ps.setString(1, cliente.getNombres());
+			ps.setString(2, cliente.getApellidos());
+			ps.setString(3, cliente.getDni());
+			ps.setInt(4, cliente.getId());
+			ps.executeUpdate();
+			} 
+		catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		finally{
+			// 4. cerrar la conexion al ponerlo en finally
+			// siempre se ejecuta
+				cerrarConexion();
+		}
 	}
 
 	@Override
 	public void delete(Integer id) {
 		// TODO Auto-generated method stub
-		
+		// 1. establecer la conexion
+		try {
+			abrirConexion();
+		// 2. preparar las sentencias sql parametrizadas
+			PreparedStatement ps= cx.prepareStatement("delete from cliente where id =?");
+		// insertar el dato del cliente en la ?
+			ps.setInt(1, id);
+			ps.executeUpdate();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		finally{
+			// 4. cerrar la conexion al ponerlo en finally
+			// siempre se ejecuta
+				cerrarConexion();
+		}
+	}
+
+	@Override
+	public Cliente buscarId(Integer id) {
+		// TODO Auto-generated method stub
+		Cliente cliente=new Cliente();
+		try {
+			abrirConexion();
+		// 2. preparar las sentencias sql parametrizadas
+			PreparedStatement ps= cx.prepareStatement("select * from cliente where id =?");
+		// insertar el dato del cliente en la ?
+			ps.setInt(1, id);
+			ResultSet consulta=ps.executeQuery();
+			while(consulta.next()){
+				cliente.setId(consulta.getInt("id"));
+				cliente.setNombres(consulta.getString("nombres"));
+				cliente.setApellidos(consulta.getString("apellidos"));
+				cliente.setDni(consulta.getString("dni"));
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		finally{
+			// 4. cerrar la conexion al ponerlo en finally
+			// siempre se ejecuta
+				cerrarConexion();
+		}
+		return cliente;
 	}
 }

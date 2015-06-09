@@ -8,11 +8,11 @@
 <link rel="stylesheet" type="text/css" href="../css/estilos_formulario.css">
 </head>
 <body>
-<form method="post" action="${pageContext.request.contextPath}/Tienda/buscarPorId" name="buscarPorId"> <!-- con # se queda en el mismo -->
+<form method="post" action="${pageContext.request.contextPath}/Tienda/actualizarPorId" name="actualizarPorId"> <!-- con # se queda en el mismo -->
     <label>Id:</label>
     <input type="text" name="id" id="id"/>
-    <input type="submit" name="eliminar" value="Eliminar"/>
-    <input type="reset" name="reiniciar" value="Reiniciar"/>
+    <input type="submit" name="Actualizar" value="Buscar"/>
+    <input type="reset" name="reiniciar" value="Cancelar"/>
     
 </form>
 </body>
