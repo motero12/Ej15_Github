@@ -14,7 +14,7 @@ public class ClienteDaoJdbc implements ClienteDao{
 	private Connection cx;
 	
 	@Override
-	public void create(Cliente cliente) {
+	public void create(Cliente cliente){
 		try {
 		// TODO Auto-generated method stub
 		// 1. instrucciones para conectar con base de datos
@@ -30,11 +30,16 @@ public class ClienteDaoJdbc implements ClienteDao{
 		// executeUpdate se usa para insert, delete y update
 		// esta instruccion devuelve como resultado el
 		// numero de filas afectadas
-		
 			ps.executeUpdate();
 		// hacer commit
-		
+			cx.commit();
 		} catch (SQLException e) {
+			try {
+				cx.rollback();
+			} catch (SQLException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
@@ -101,7 +106,7 @@ public class ClienteDaoJdbc implements ClienteDao{
 		//establecer la conexion
 			cx= DriverManager.getConnection("jdbc:mysql://localhost:3306/Tienda","rootTienda","rootTienda");
 		//iniciar el autoCommit en false
-//			cx.setAutoCommit(false);
+			cx.setAutoCommit(false);
 		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -166,8 +171,15 @@ public class ClienteDaoJdbc implements ClienteDao{
 			ps.setString(3, cliente.getDni());
 			ps.setInt(4, cliente.getId());
 			ps.executeUpdate();
+			cx.commit();
 			} 
 		catch (SQLException e) {
+			try {
+				cx.rollback();
+			} catch (SQLException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
@@ -189,7 +201,14 @@ public class ClienteDaoJdbc implements ClienteDao{
 		// insertar el dato del cliente en la ?
 			ps.setInt(1, id);
 			ps.executeUpdate();
+			cx.commit();
 		} catch (SQLException e) {
+			try {
+				cx.rollback();
+			} catch (SQLException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}

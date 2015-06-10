@@ -55,6 +55,7 @@ public class TiendaServlet extends HttpServlet {
 		String titulo="Sin titulo";
 		RequestDispatcher rd;
 		switch(action){
+		//se ejecuta cuando se pulsa Alta de cliente desde index.html
 			case "altaCliente":
 				rd=request.getRequestDispatcher("/html/AltaClienteView.html");
 				rd.forward(request, response);

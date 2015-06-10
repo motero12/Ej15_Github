@@ -14,9 +14,13 @@
 function enviar(boton){
 	var formulario=document.getElementById("formulario"+boton.name.substring(3));
 	// alterar el action de acuerdo con el boton pulsado
-// 	if(boton.value=="Actualizar")
-// 		formulario.action="$(pageContext.request.contextPath)/Tienda/buscarPorId";
-// 	    formulario.submit();
+	if(activar==0){
+		
+	}
+	if(boton.value=="Actualizar")
+		formulario.action="${pageContext.request.contextPath}/Tienda/buscarPorId";
+	    formulario.submit();
+	    
 }
 </script>
 </head>
@@ -36,14 +40,26 @@ function enviar(boton){
         <% for(Cliente c: clientes){ %>
         <form id="formulario<%=c.getId()%>" action="$(pageContext.request.contextPath)/Tienda/buscarPorId" 
             method="post" onsubmit="return false;">
+            <%byte activar=0;%>
             <tr id="<%=c.getId()%>">
                 <td style="color:red;background-color:green;text-align:center"> 
-                    <input type="text" name="id" value="<%=c.getId() %>"></td>
-                <td style="color:blue"><%=c.getNombres() %></td>
-                <td><%=c.getApellidos() %></td>
-                <td><%=c.getDni() %></td>
-                <td><input id="btnSinBordes" type="submit" value="Eliminar" 
-                name="btn<%=c.getId()%>" onclick="enviar(this);"/></td>
+                    <%=c.getId() %></td>  
+                <td style="color:blue"><input type="text" name="nombre" value="<%=c.getNombres() %>"></td>
+                <td><input type="text" name="apellidos" value="<%=c.getApellidos() %>"></td>
+                <td><input type="text" name="dni" value="<%=c.getDni() %>"></td>
+                <td><input class="btnSinBordes" 
+                   type="submit" value="Editar"
+                     name="btn<%= c.getId()%>" onclick="enviar(this);"/> 
+                </td>
+                <td><input class="btnSinBordes" 
+                   type="submit" value="Actualizar" disabled="disabled"
+                     name="btn<%= c.getId()%>" onclick="enviar(this);"/> 
+                </td>
+               <td><input class="btnSinBordes" 
+                   type="submit" value="Eliminar" disabled="disabled"
+                     name="btn<%= c.getId()%>" onclick="enviar(this);"/> 
+                     
+               </td>
             </tr>
         </form>
         <% } %>
