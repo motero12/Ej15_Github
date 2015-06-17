@@ -10,13 +10,17 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
+import es.curso.controllers.LoginController;
 import es.curso.controllers.ejb.ActualizarPorIdControllerEjb;
 import es.curso.controllers.ejb.BuscarPorIdControllerEjb;
 import es.curso.controllers.ejb.BuscarPorNombreControllerEjb;
 import es.curso.controllers.ejb.DarAltaClienteControllersEjb;
 import es.curso.controllers.ejb.ListarTodosControllersEjb;
+import es.curso.controllers.ejb.LoginControllerEjb;
 import es.curso.model.entity.Cliente;
+import es.curso.model.entity.Usuario;
 
 /**
  * Servlet implementation class TiendaServlet
@@ -57,7 +61,7 @@ public class TiendaServlet extends HttpServlet {
 		switch(action){
 		//se ejecuta cuando se pulsa Alta de cliente desde index.html
 			case "altaCliente":
-				rd=request.getRequestDispatcher("/html/AltaClienteView.html");
+				rd=request.getRequestDispatcher("/jsp/altaCliente.jsp");
 				rd.forward(request, response);
 				break;
 			case "listarTodos":
@@ -87,6 +91,10 @@ public class TiendaServlet extends HttpServlet {
 				rd.forward(request, response);
 				break;
 //				String cadenaId = request.getParameter("id");
+			case "login":
+				rd = request.getRequestDispatcher("/login.jsp");
+				rd.forward(request, response);
+				break;
 		}
 	}
 
@@ -108,7 +116,7 @@ public class TiendaServlet extends HttpServlet {
 			DarAltaClienteControllersEjb controlador=new
 					DarAltaClienteControllersEjb();
 			controlador.agregar(cliente);
-			rd=request.getRequestDispatcher("/index.html");
+			rd=request.getRequestDispatcher("/index.jsp");
 			rd.forward(request, response);
 			break;
 		case "buscarPorNombre":
@@ -151,8 +159,42 @@ public class TiendaServlet extends HttpServlet {
 			Cliente clienteUpdates=new Cliente(idUpdate,nombreUpdate, apellidosUpdate, dniUpdate);
 			ActualizarPorIdControllerEjb updateEjb=new ActualizarPorIdControllerEjb();
 			updateEjb.actualizar(clienteUpdates);
-			rd=request.getRequestDispatcher("/index.html");
+			rd=request.getRequestDispatcher("/index.jsp");
 			rd.forward(request, response);
+			break;
+		case "login":
+			//recuperar los datos del formulario
+			String userName=request.getParameter("userName");
+			String password=request.getParameter("password");
+			LoginController loginController=new LoginControllerEjb();
+			Usuario usuario=loginController.login(userName, password);
+			if(usuario!=null){
+				//si el usario existe:
+				//		-meter los datos del usuario
+				//el usuario existe
+				//primero se destruye la sesion
+				HttpSession session=request.getSession(false);
+				//despues se vuelve a crear la sesion
+				session=request.getSession(true);
+				String nombreCompleto=usuario.getNombres()+" "+usuario.getApellidos();
+				//creamos parametros nombreCompleto y userName (son el primer parametro
+				//entre comillas en setAttribute
+				session.setAttribute("nombreCompleto", nombreCompleto);
+				session.setAttribute("userName", usuario.getUserName());
+				rd=request.getRequestDispatcher("/index.jsp");
+				rd.forward(request, response);
+			}
+			else{
+				//si el usuario no existe:
+				//redirigir hacia login otra vez
+				//este response va por defecto al doGet switch case login		
+				response.sendRedirect("login");
+				
+			}
+			//involucrar el controlador adecuado
+			
+			
+			
 			break;
 		}
 	}
