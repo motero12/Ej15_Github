@@ -8,8 +8,17 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/css/estilos_formulario.css">
 </head>
 <body>
+    <%response.setHeader("Cache-Control", "no-cache");//fuerza a la cache a obtener una nueva copia%>
+    <%response.setHeader("Cache-Control", "no-store");%>
+    <%response.setDateHeader("Expires",0);%>
+    <%response.setHeader("Pragma", "no-cache");//HTTP 1.0 backward comptability%>
+    <%HttpSession miSession=request.getSession(); %>
     <br/>
-    <a href="${pageContext.request.contextPath}/Tienda/login">Login</a>
+    <%if (miSession.getAttribute("userName")!=null) {%>
+    <p>Usuario: <%=miSession.getAttribute("userName") %></p>
+    <p>¡Hola <%=miSession.getAttribute("nombreCompleto") %>!</p>
+    <p>Máximo periodo de inactividad: <%=miSession.getMaxInactiveInterval()%> segundos</p>
+    <a href="${pageContext.request.contextPath}/Tienda/logout">Logout</a>
     <br/>
     <a href="${pageContext.request.contextPath}/Tienda/altaCliente">Alta de cliente</a>
     <br/>
@@ -20,3 +29,7 @@
     <a href="${pageContext.request.contextPath}/Tienda/actualizarPorId">Actualizar cliente</a>
     <br/>
     <a href="${pageContext.request.contextPath}/Tienda/buscarPorId">Borrar cliente</a>
+    <%} else{%>
+    <a href="${pageContext.request.contextPath}/Tienda/login">Login</a>
+    <%}%>
+    
