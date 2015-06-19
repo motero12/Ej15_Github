@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<estudiantes>
+	<estudiante dni="1234">
+	<nombre>Mariano</nombre>
+	<calificacion>6</calificacion>
+	</estudiante>
+	<estudiante dni="5678">
+	<nombre>María</nombre>
+	<calificacion>7</calificacion>
+	</estudiante>
+	<estudiante dni="9012">
+	<nombre>Jorge</nombre>
+	<calificacion>8</calificacion>
+	</estudiante>
+	
+</estudiantes>
